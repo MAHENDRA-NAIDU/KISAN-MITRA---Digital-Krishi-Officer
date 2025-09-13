@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Mitra - AI Farmer Support System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Replace the entire :root section with this --- */
+:root {
+    --primary-green: #008447;
+    --dark-green: #005C31;
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+    --surface: #FFFFFF;
+    --border-color: #E5E7EB;
+
+    /* ▼▼▼ NEW GRADIENTS ▼▼▼ */
+    --bg-gradient: linear-gradient(to top right, #f0fdf4, #e7f7ee);
+    --navbar-gradient: linear-gradient(90deg, #008447 0%, #00914f 100%);
+    --footer-gradient: linear-gradient(90deg, #005C31 0%, #004424 100%);
+    --button-gradient: linear-gradient(45deg, #7ED957, #58b432);
+    --card-gradient: linear-gradient(135deg, #ffffff, #f9fafb);
+    --hero-bg-gradient: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+}
+
+        /* General App Styling */
+        html { scroll-behavior: smooth; }
+        body {
+          font-family: 'Poppins', 'Inter', sans-serif;
+          margin: 0;
+          background-image: var(--bg-gradient);
+          color: var(--text-dark);
+        }
+        
+        /* --- INITIAL LANGUAGE MODAL --- */
+        #language-selection-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+        /* --- Find this rule and replace it --- */
+        .language-selection-container {
+            background-color: var(--surface); 
+            padding: 40px; 
+            border-radius: 16px;
+            text-align: center; 
+            max-width: 550px; /* Reduced from 500px to better fit content, but on a smaller modal */
+            width: 90%;
+            animation: fadeIn 0.5s ease-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Added shadow */
+        }
+        .language-selection-container h1 { color: var(--primary-green); margin-bottom: 20px; }
+        .language-options-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;
+        }
+        .language-select-btn {
+            padding: 15px; border: 1px solid var(--border-color); border-radius: 8px;
+            background-color: var(--background); font-size: 1rem; font-weight: 500;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        /* --- Add these new rules for the chat header --- */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #F9FAFB;
+    border-top-left-radius: 20px; /* Match container radius */
+    border-top-right-radius: 20px; /* Match container radius */
+}
+.chat-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--primary-green);
+    font-weight: 600;
+}
+#stop-voice-btn {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+#stop-voice-btn:hover {
+    background-color: #fecaca;
+}
+        .language-select-btn:hover { background-color: var(--primary-green); color: white; border-color: var(--primary-green); }
+
+        /* --- LOGIN PAGE STYLING --- */
+        #login-page {
+            display: none; /* Hidden initially */
+            justify-content: center; align-items: center; height: 100vh;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://placehold.co/1920x1080/008447/FFFFFF?text=Kerala+Farm+Background');
+            background-size: cover; background-position: center;
+        }
+        .login-container {
+            background-color: var(--surface); padding: 40px 50px; border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 90%;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .login-logo { width: 80px; height: 80px; margin-bottom: 20px; }
+        .login-container h1 { color: var(--primary-green); margin: 0 0 10px 0; font-weight: 700;}
+        .login-container p { color: var(--text-light); margin-bottom: 30px; }
+        .login-form input {
+            width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid var(--border-color);
+            border-radius: 8px; box-sizing: border-box; font-family: 'Poppins', sans-serif; transition: all 0.2s ease;
+        }
+        .login-form input:focus { outline: none; border-color: var(--primary-green); box-shadow: 0 0 0 4px rgba(0, 132, 71, 0.2); }
+        .login-btn {
+            width: 100%; padding: 14px; border: none; background-image: var(--button-gradient);color: white;
+            border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(88, 180, 50, 0.4);
+        }
+        .login-btn:hover {
+    transform: translateY(-3px) scale(1.02); /* Added scale */
+    box-shadow: 0 6px 20px rgba(88, 180, 50, 0.5); /* Updated shadow color */
+}
+
+        /* --- MAIN APP STYLING --- */
+        #main-app { display: none; flex-direction: column; }
+
+        /* Navbar Styling */
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-image: var(--navbar-gradient); /* Changed */
+    backdrop-filter: blur(10px);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    z-index: 100;
+    position: sticky;
+    top: 0;
+    transition: background-color 0.3s ease;
+}
+        .navbar-left, .navbar-right, .navbar-center { display: flex; align-items: center; gap: 15px; }
+        .navbar-brand { display: flex; align-items: center; }
+        .navbar-logo { height: 45px; margin-right: 15px; }
+        .navbar-title-container { line-height: 1.2; }
+        .navbar-title { margin: 0; font-size: 1.25rem; color: var(--surface); font-weight: 600; }
+        .navbar-subtitle { margin: 0; font-size: 0.8rem; color: #E5E7EB; }
+        .navbar-links { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .navbar-links a { text-decoration: none; color: var(--surface); font-weight: 500; padding: 8px 12px; border-radius: 8px; transition: all 0.3s ease; }
+        .navbar-links a:hover { background-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .hamburger-btn { display: none; background: none; border: none; font-size: 2rem; color: white; cursor: pointer; }
+        
+        /* Language Dropdown */
+        .language-dropdown { position: relative; }
+        .language-dropdown-btn { background: none; border: 1px solid rgba(255,255,255,0.5); color: white; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 500; width: 100%; }
+        .language-options { display: none; position: absolute; top: 110%; left: 50%; transform: translateX(-50%); background-color: var(--surface); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); overflow: hidden; z-index: 20;}
+        .language-options button { display: block; width: 100%; padding: 10px 20px; border: none; background: none; text-align: left; cursor: pointer; color: var(--text-dark); }
+        .language-options button:hover { background-color: var(--background); }
+
+        /* --- NEW SECTIONS --- */
+        section { padding: 80px 20px; }
+        .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; color: var(--primary-green); margin-bottom: 10px; }
+        .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--text-light); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* Hero Section (with Chatbot) */
+        .hero-text {
+    text-align: center;
+    margin-bottom: 30px;
+    color: white;
+}
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.hero-subtitle {
+    font-size: 1.25rem;
+    margin: 10px 0 0 0;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    max-width: 600px;
+}
+        #hero {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 90vh;
+            background-image: var(--hero-bg-gradient), url('https://placehold.co/1920x1080/005C31/FFFFFF?text=Kerala+Backwaters+Agriculture');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            padding: 40px 20px;
+        }
+        .chat-container { width: 100%; max-width: 800px; background-color: var(--surface); border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column; height: 70vh; }
+        .messages-area { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        .message { padding: 12px 18px; border-radius: 20px; margin-bottom: 12px; max-width: 80%; line-height: 1.6; animation: messageFadeIn 0.4s forwards; opacity: 0; transform: translateY(10px); }
+        .message.user { background-color: var(--primary-green); color: white; align-self: flex-end; border-bottom-right-radius: 5px; }
+        .message.bot { background-color: #F3F4F6; color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 5px; }
+        .message img { max-width: 100%; border-radius: 15px; margin-top: 10px; }
+        .message .typing-indicator { display: flex; align-items: center; padding: 10px 0; }
+        .typing-indicator span { height: 8px; width: 8px; margin: 0 2px; background-color: #aaa; border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite ease-in-out both; }
+        .typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
+        
+        .input-area { display: flex; gap: 10px; padding: 15px; border-top: 1px solid var(--border-color); background-color: #F9FAFB; border-radius: 20px; }
+        .input-area input { flex-grow: 1; padding: 14px; border: 1px solid var(--border-color); border-radius: 25px; font-size: 1rem; font-family: 'Poppins', sans-serif; min-width: 0; }
+        .input-area button { border: none; background-color: var(--primary-green); color: white; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; flex-shrink: 0; }
+        .input-area button:hover { background-color: var(--dark-green); transform: scale(1.05); }
+        .input-area button:disabled { background-color: #9E9E9E; cursor: not-allowed; }
+        .input-area button svg { width: 24px; height: 24px; }
+        
+        /* Features Section */
+        #features { background-color: transparent; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .feature-card {
+            background-color: var(--background); text-align: center; padding: 30px;
+            border-radius: 12px; border: 1px solid var(--border-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .feature-icon { font-size: 3rem; color: var(--primary-green); margin-bottom: 15px; }
+        .feature-card h3 { margin: 0 0 10px 0; font-size: 1.25rem; }
+        .feature-card p { color: var(--text-light); font-size: 0.95rem; }
+        .weather-info { text-align: left; }
+
+        /* How it Works Section */
+        .how-it-works-steps { display: flex; justify-content: space-around; max-width: 1000px; margin: 0 auto; gap: 30px; flex-wrap: wrap; }
+        .step-card { text-align: center; max-width: 250px; }
+        .step-number { font-size: 2.5rem; font-weight: 700; color: var(--light-green); line-height: 1; margin-bottom: 10px; }
+        .step-card h3 { font-size: 1.2rem; color: var(--primary-green); }
+        .step-card p { color: var(--text-light); }
+
+        /* Testimonials Section */
+        #testimonials { background-color: transparent; }
+        .testimonial-card {
+            background-color: var(--surface); padding: 30px; border-radius: 12px;
+            max-width: 600px; margin: 0 auto; text-align: center;
+            border-left: 5px solid; border-image: var(--button-gradient);
+        }
+        .testimonial-text { font-style: italic; color: var(--text-light); margin-bottom: 20px; }
+        .testimonial-author { font-weight: 600; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 40px 20px; background-image: var(--footer-gradient); color: #E5E7EB; }
+        .footer-logo { width: 50px; height: 50px; margin-bottom: 15px; }
+        .footer-text { margin: 10px 0; }
+        .footer-brand { font-weight: 600; }
+
+        /* Modal Styling */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: var(--surface); padding: 40px; border-radius: 12px; max-width: 600px;
+            width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: scale(0.9); transition: transform 0.3s ease;
+            position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-close-btn {
+            position: absolute; top: 15px; right: 15px; background: none; border: none;
+            font-size: 2rem; cursor: pointer; color: var(--text-light);
+        }
+        
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed; bottom: 20px; right: 20px; background-color: var(--primary-green);
+            color: white; border: none; border-radius: 50%; width: 50px; height: 50px;
+            font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none; justify-content: center; align-items: center; z-index: 99;
+            opacity: 0; transition: opacity 0.3s, transform 0.3s;
+        }
+        #back-to-top.show { display: flex; opacity: 1; }
+
+        /* Scroll Animations */
+        .hidden { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .visible { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes messageFadeIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 950px) {
+            .navbar {
+                justify-content: space-between;
+                padding: 1rem;
+            }
+            .navbar-left, .navbar-right { flex-basis: 0; flex-grow: 1; }
+            .navbar-left { justify-content: flex-start; }
+            
+.navbar-right { 
+    justify-content: flex-end; 
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add a small gap */
+}
+            .navbar-links { 
+                display: none; flex-direction: column; align-items: flex-start;
+                position: absolute; top: 100%; left: 0; 
+                background-color: #00733c;
+                width: 100%; padding: 1rem; gap: 1rem; 
+            }
+            .navbar-links.active { display: flex; }
+            .hamburger-btn { display: block; }
+        }
+        /* --- Add this new media query at the end of the style block --- */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem; /* Make title slightly smaller on mobile */
+    }
+    #hero {
+        min-height: 90vh; /* Adjust hero section height */
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .chat-container {
+        height: 75vh; /* Make chat container slightly smaller */
+        width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- INITIAL LANGUAGE SELECTION MODAL -->
+    <div id="language-selection-modal">
+        <div class="language-selection-container">
+            <h1 data-i18n-key="lang_select_title">Select Your Language</h1>
+            <p data-i18n-key="lang_select_subtitle">Please choose your preferred language to continue.</p>
+            <div class="language-options-grid">
+                <button class="language-select-btn" data-lang="en">English</button>
+                <button class="language-select-btn" data-lang="hi">हिंदी</button>
+                <button class="language-select-btn" data-lang="ml">മലയാളം</button>
+                <button class="language-select-btn" data-lang="te">తెలుగు</button>
+                <button class="language-select-btn" data-lang="ta">தமிழ்</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN PAGE -->
+    <div id="login-page">
+        <div class="login-container">
+            <svg class="login-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#008447" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<h1 id="form-title" data-i18n-key="login_title">Welcome to Kisan Mitra</h1>
+<p id="form-subtitle" data-i18n-key="login_subtitle">Your personal AI farming assistant.</p>
+
+<form id="login-form" class="login-form">
+    <input type="email" id="email-input" data-i18n-placeholder="login_email_placeholder" placeholder="Email or Phone Number" required>
+    <input type="password" id="password-input" data-i18n-placeholder="login_password_placeholder" placeholder="Password" required>
+    <button type="button" id="login-btn" class="login-btn" data-i18n-key="login_btn_text">Login</button>
+</form>
+
+<form id="signup-form" class="login-form" style="display: none;">
+    <input type="text" id="signup-name" placeholder="Full Name" required>
+    <input type="email" id="signup-email" placeholder="Email Address" required>
+    <input type="password" id="signup-password" placeholder="Create Password" required>
+    <button type="button" id="signup-btn" class="login-btn">Create Account</button>
+</form>
+
+<p id="toggle-form-text" style="margin-top: 20px; color: var(--text-light);">
+    Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>
+</p>
+        </div>
+    </div>
+    
+    <!-- MAIN APP -->
+    <div id="main-app">
+        <nav class="navbar">
+          <div class="navbar-left">
+            <div class="navbar-brand">
+             <svg class="navbar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="navbar-title-container">
+                <h1 class="navbar-title" data-i18n-key="app_title">Kisan Mitra</h1>
+                <p class="navbar-subtitle" data-i18n-key="app_subtitle">Your Farming Co-Pilot</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="navbar-right">
+            <div class="navbar-center language-dropdown">
+              <button class="language-dropdown-btn" id="lang-dropdown-btn" data-i18n-key="lang_btn">Language</button>
+              <div class="language-options" id="lang-options">
+                  <button data-lang="en">English</button>
+                  <button data-lang="hi">हिंदी</button>
+                  <button data-lang="ml">മലയാളം</button>
+                  <button data-lang="te">తెలుగు</button>
+                  <button data-lang="ta">தமிழ்</button>
+              </div>
+          </div>
+            <div class="navbar-links" id="navbar-links">
+                <a href="#hero" data-i18n-key="nav_ai_chat">AI Chat</a>
+                <a href="#features" data-i18n-key="nav_features">Features</a>
+                <a href="#how-it-works" data-i18n-key="nav_how_it_works">How It Works</a>
+                <a href="#testimonials" data-i18n-key="nav_testimonials">Testimonials</a>
+            </div>
+            <button class="hamburger-btn" id="hamburger-btn">☰</button>
+          </div>
+        </nav>
+        
+        <main>
+            <!-- Hero Section with Chat -->
+            <section id="hero">
+                <div class="hero-text">
+                    <h1 class="hero-title">Welcome to Kisan Mitra</h1>
+                    <p class="hero-subtitle">Your AI-powered guide to smarter farming. Ask me anything!</p>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h3>AI Krishi Mitra Assistant</h3>
+                        <button id="stop-voice-btn" title="Stop voice">🔊 Stop</button>
+                    </div>
+                    <div class="messages-area" id="messages-area"></div>
+                    <div class="input-area">
+                        <input type="text" id="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Ask about a crop or upload an image...">
+                        <button id="image-btn" title="Upload Image"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.5L14.5 12L19 18H5L8.5 13.5Z" fill="currentColor"/></svg></button>
+                        <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
+                        <button id="voice-btn" title="Ask with voice"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2ZM19 11C19 14.87 15.87 18 12 18C8.13 18 5 14.87 5 11H7C7 14.41 9.59 17 13 17V21H11V23H13H15V21H13V17C16.41 17 19 14.41 19 11Z" fill="currentColor"/></svg></button>
+                        <button id="send-btn" title="Send message">➤</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All other sections remain the same -->
+            <section id="features">
+                <h2 class="section-title" data-i18n-key="features_title">All-in-One Farming Toolkit</h2>
+                <p class="section-subtitle" data-i18n-key="features_subtitle">From weather forecasts to government schemes, get all the information you need in one place.</p>
+                <div class="features-grid">
+    <a href="weather.html" style="text-decoration: none;">
+        <div class="feature-card hidden">
+            <div class="feature-icon">🌦️</div>
+            <h3 data-i18n-key="modal_weather_title">Live Weather Forecast</h3>
+            <p data-i18n-key="modal_weather_body_short">Get real-time weather updates for your location to plan your activities.</p>
+        </div>
+    </a>
+
+    <a href="calendar.html" style="text-decoration: none;">
+        <div class="feature-card hidden">
+             <div class="feature-icon">📅</div>
+            <h3 data-i18n-key="modal_calendar_title">Crop Calendar</h3>
+            <p data-i18n-key="modal_calendar_body_short">Get personalized sowing and harvesting schedules for your location and crop.</p>
+        </div>
+    </a>
+
+    <a href="community.html" style="text-decoration: none;">
+        <div class="feature-card hidden">
+             <div class="feature-icon">👥</div>
+            <h3 data-i18n-key="modal_community_title">Community Support</h3>
+            <p data-i18n-key="modal_community_body_short">Connect with fellow farmers and experts to share knowledge and solve problems.</p>
+        </div>
+    </a>
+
+    <a href="schemes.html" style="text-decoration: none;">
+        <div class="feature-card hidden">
+            <div class="feature-icon">🏛️</div>
+            <h3 data-i18n-key="modal_schemes_title">Government Schemes</h3>
+            <p data-i18n-key="modal_schemes_body_short">Stay updated on the latest government subsidies, loans, and support programs.</p>
+        </div>
+    </a>
+</div>
+            </section>
+            
+            <section id="how-it-works">
+                <h2 class="section-title" data-i18n-key="how_it_works_title">Simple Steps to Smart Farming</h2>
+                <div class="how-it-works-steps">
+                    <div class="step-card hidden">
+                        <div class="step-number">01</div>
+                        <h3 data-i18n-key="step1_title">Ask or Upload</h3>
+                        <p data-i18n-key="step1_body">Type a query, speak, or upload an image of your crop.</p>
+                    </div>
+                    <div class="step-card hidden">
+                        <div class="step-number">02</div>
+                        <h3 data-i18n-key="step2_title">Get Instant AI Advice</h3>
+                        <p data-i18n-key="step2_body">Our powerful AI analyzes your input and provides actionable answers.</p>
+                    </div>
+                    <div class="step-card hidden">
+                        <div class="step-number">03</div>
+                        <h3 data-i18n-key="step3_title">Listen and Learn</h3>
+                        <p data-i18n-key="step3_body">Hear the response spoken aloud, making information accessible to everyone.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials">
+                <h2 class="section-title" data-i18n-key="testimonials_title">Trusted by Farmers</h2>
+                <div class="testimonial-card hidden">
+                    <p class="testimonial-text" data-i18n-key="testimonial1_text">"Kisan Mitra's image analysis identified leaf blight on my paddy crop instantly. Saved my harvest!"</p>
+                    <p class="testimonial-author" data-i18n-key="testimonial1_author">- A. Varghese, Kerala</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <svg class="footer-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <p class="footer-text" data-i18n-key="footer_kerala">A Digital Initiative for the Government of Kerala</p>
+            <p class="footer-text">© 2025 Kisan Mitra | <span data-i18n-key="footer_hexa">A Product by</span> <strong class="footer-brand">HEXA CODERS</strong></p>
+        </footer>
+    </div>
+    
+    <!-- MODALS -->
+    <div id="feature-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <h2 id="modal-title">Feature Title</h2>
+            <p id="modal-body">Feature description goes here.</p>
+        </div>
+    </div>
+    
+    <!-- BACK TO TOP BUTTON -->
+    <button id="back-to-top" title="Go to top">↑</button>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- ELEMENTS ---
+        const stopVoiceBtn = document.getElementById('stop-voice-btn');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const showSignupLink = document.getElementById('show-signup-link');
+        const toggleFormText = document.getElementById('toggle-form-text');
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+        const signupBtn = document.getElementById('signup-btn');
+        const langSelectionModal = document.getElementById('language-selection-modal');
+        const loginPage = document.getElementById('login-page');
+        const mainApp = document.getElementById('main-app');
+        const loginBtn = document.getElementById('login-btn');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navbarLinks = document.getElementById('navbar-links');
+        const langDropdownBtn = document.getElementById('lang-dropdown-btn');
+        const langOptions = document.getElementById('lang-options');
+        const weatherInfo = document.getElementById('weather-info');
+        const messagesArea = document.getElementById('messages-area');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const voiceBtn = document.getElementById('voice-btn');
+        const backToTopBtn = document.getElementById('back-to-top');
+        const featureModal = document.getElementById('feature-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const imageBtn = document.getElementById('image-btn');
+        const imageUploadInput = document.getElementById('image-upload-input');
+        if (location.hash === '#app') {
+        langSelectionModal.style.display = 'none';
+        loginPage.style.display = 'none';
+        mainApp.style.display = 'flex';
+        // Also initialize the features needed for the main app
+        getLocationAndFetchWeather();
+        if (!messagesArea.hasChildNodes()) { // Add welcome message only if chat is empty
+             addMessage('bot', translations[currentLanguage].initial_greeting);
+        }
+    }
+        // Add this event listener
+        stopVoiceBtn.addEventListener('click', () => {
+        speechSynthesis.cancel(); // This is the command to stop all speech
+        });
+
+        // --- API KEYS ---
+        const GEMINI_API_KEY = 'AIzaSyApI-lZH1dH6owitjQWqTLd1csiop0pB70';
+        // ⬇️ IMPORTANT: Get a FREE key from openweathermap.org and paste it here ⬇️
+        const WEATHER_API_KEY = '540b7926732540b6870165230251309'; 
+        
+        const GEMINI_MODEL_NAME = "gemini-1.5-flash-latest"; // Vision capable model
+        const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
+
+        // --- FULL TRANSLATIONS OBJECT ---
+        const translations = {
+            en: {
+                lang_select_title: "Select Your Language", lang_select_subtitle: "Please choose your preferred language to continue.",
+                login_title: "Welcome to Kisan Mitra", login_subtitle: "Your personal AI farming assistant.", login_email_placeholder: "Email or Phone Number", login_password_placeholder: "Password", login_btn_text: "Login",
+                app_title: "Kisan Mitra", app_subtitle: "Your Farming Co-Pilot", lang_btn: "Language",
+                nav_ai_chat: "AI Chat", nav_features: "Features", nav_how_it_works: "How It Works", nav_testimonials: "Testimonials",
+                chat_placeholder: "Ask about a crop or upload an image...", initial_greeting: "Hello! How can I help you? You can ask a question or upload an image for analysis.",
+                features_title: "All-in-One Farming Toolkit", features_subtitle: "From weather forecasts to government schemes, get all the information you need in one place.",
+                how_it_works_title: "Simple Steps to Smart Farming", step1_title: "Ask or Upload", step1_body: "Type a query, speak, or upload an image of your crop.", step2_title: "Get Instant AI Advice", step2_body: "Our powerful AI analyzes your input and provides actionable answers.", step3_title: "Listen and Learn", step3_body: "Hear the response spoken aloud, making information accessible to everyone.",
+                testimonials_title: "Trusted by Farmers", testimonial1_text: "\"Kisan Mitra's image analysis identified leaf blight on my paddy crop instantly. Saved my harvest!\"", testimonial1_author: "- A. Varghese, Kerala",
+                api_error: "Sorry, I'm having trouble connecting. Please check the API key or try again later.",
+                weather_loading: "Loading weather data...",
+                modal_weather_title: "Live Weather Forecast", modal_weather_body: "Get real-time weather updates for your location, including temperature, conditions, and humidity, to help you plan your farming activities.", modal_weather_body_short: "Get real-time weather updates for your location to plan your activities.",
+                modal_calendar_title: "Crop Calendar", modal_calendar_body: "Our smart calendar provides personalized sowing, irrigation, and harvesting schedules based on your crop, location, and local weather patterns.", modal_calendar_body_short: "Get personalized sowing and harvesting schedules for your location and crop.",
+                modal_community_title: "Community Support", modal_community_body: "Connect with a network of experienced farmers and agricultural experts. Ask questions, share your successes, and get trusted advice.", modal_community_body_short: "Connect with fellow farmers and experts to share knowledge and solve problems.",
+                modal_schemes_title: "Government Schemes", modal_schemes_body: "Stay informed about the latest government schemes, subsidies, and financial support available for farmers. We simplify the information so you can easily understand and apply for benefits.", modal_schemes_body_short: "Stay updated on the latest government subsidies, loans, and support programs.",
+                footer_kerala: "A Digital Initiative for the Government of Kerala", footer_hexa: "A Product by"
+            },
+            ml: {
+                lang_select_title: "നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക", lang_select_subtitle: "തുടരാൻ ദയവായി നിങ്ങളുടെ ഇഷ്ട ഭാഷ തിരഞ്ഞെടുക്കുക.",
+                login_title: "കിസാൻ മിത്രയിലേക്ക് സ്വാഗതം", login_subtitle: "നിങ്ങളുടെ വ്യക്തിഗത എഐ കാർഷിക സഹായി.", login_email_placeholder: "ഇമെയിൽ അല്ലെങ്കിൽ ഫോൺ നമ്പർ", login_password_placeholder: "പാസ്‌വേഡ്", login_btn_text: "ലോഗിൻ ചെയ്യുക",
+                app_title: "കിസാൻ മിത്ര", app_subtitle: "നിങ്ങളുടെ കാർഷിക സഹ-പൈലറ്റ്", lang_btn: "ഭാഷ",
+                nav_ai_chat: "AI ചാറ്റ്", nav_features: "സവിശേഷതകൾ", nav_how_it_works: "ഇതെങ്ങനെ പ്രവർത്തിക്കുന്നു", nav_testimonials: "അഭിപ്രായങ്ങൾ",
+                chat_placeholder: "ഒരു വിളയെക്കുറിച്ച് ചോദിക്കുക അല്ലെങ്കിൽ ഒരു ചിത്രം അപ്‌ലോഡ് ചെയ്യുക...", initial_greeting: "നമസ്കാരം! ഞാൻ നിങ്ങളെ എങ്ങനെ സഹായിക്കണം? നിങ്ങൾക്ക് ഒരു ചോദ്യം ചോദിക്കാം അല്ലെങ്കിൽ വിശകലനത്തിനായി ഒരു ചിത്രം അപ്‌ലോഡ് ചെയ്യാം.",
+                features_title: "സമഗ്രമായ കാർഷിക ടൂൾകിറ്റ്", features_subtitle: "കാലാവസ്ഥാ പ്രവചനങ്ങൾ മുതൽ സർക്കാർ പദ്ധതികൾ വരെ, നിങ്ങൾക്ക് ആവശ്യമായ എല്ലാ വിവരങ്ങളും ഒരിടത്ത് നേടുക.",
+                how_it_works_title: "സ്മാർട്ട് ഫാമിംഗിലേക്കുള്ള ലളിതമായ വഴികൾ", step1_title: "ചോദിക്കുക അല്ലെങ്കിൽ അപ്‌ലോഡ് ചെയ്യുക", step1_body: "നിങ്ങളുടെ വിളയുടെ ഒരു ചോദ്യം ടൈപ്പ് ചെയ്യുക, സംസാരിക്കുക, അല്ലെങ്കിൽ ഒരു ചിത്രം അപ്‌ലോഡ് ചെയ്യുക.", step2_title: "തൽക്ഷണ AI ഉപദേശം നേടുക", step2_body: "ഞങ്ങളുടെ ശക്തമായ AI നിങ്ങളുടെ ഇൻപുട്ട് വിശകലനം ചെയ്യുകയും പ്രവർത്തനക്ഷമമായ ഉത്തരങ്ങൾ നൽകുകയും ചെയ്യുന്നു.", step3_title: "കേട്ട് പഠിക്കുക", step3_body: "പ്രതികരണം ഉച്ചത്തിൽ കേൾക്കുക, ഇത് എല്ലാവർക്കും വിവരങ്ങൾ ലഭ്യമാക്കുന്നു.",
+                testimonials_title: "കർഷകർ വിശ്വസിക്കുന്ന", testimonial1_text: "\"കിസാൻ മിത്രയുടെ ഇമേജ് വിശകലനം എന്റെ നെൽക്കൃഷിയിലെ ഇലചീയൽ തൽക്ഷണം കണ്ടെത്തി. എന്റെ വിളവെടുപ്പ് രക്ഷിച്ചു!\"", testimonial1_author: "- എ. വർഗീസ്, കേരളം",
+                api_error: "ക്ഷമിക്കണം, എനിക്ക് കണക്റ്റുചെയ്യുന്നതിൽ പ്രശ്നമുണ്ട്. ദയവായി API കീ പരിശോധിക്കുക അല്ലെങ്കിൽ പിന്നീട് വീണ്ടും ശ്രമിക്കുക.",
+                weather_loading: "കാലാവസ്ഥാ ഡാറ്റ ലോഡുചെയ്യുന്നു...",
+                modal_weather_title: "തത്സമയ കാലാവസ്ഥാ പ്രവചനം", modal_weather_body: "നിങ്ങളുടെ കാർഷിക പ്രവർത്തനങ്ങൾ ആസൂത്രണം ചെയ്യാൻ സഹായിക്കുന്നതിന്, താപനില, അവസ്ഥകൾ, ഈർപ്പം എന്നിവ ഉൾപ്പെടെ നിങ്ങളുടെ സ്ഥലത്തെക്കുറിച്ചുള്ള തത്സമയ കാലാവസ്ഥാ അപ്‌ഡേറ്റുകൾ നേടുക.", modal_weather_body_short: "നിങ്ങളുടെ പ്രവർത്തനങ്ങൾ ആസൂത്രണം ചെയ്യുന്നതിന് നിങ്ങളുടെ സ്ഥലത്തെക്കുറിച്ചുള്ള തത്സമയ കാലാവസ്ഥാ അപ്‌ഡേറ്റുകൾ നേടുക.",
+                modal_calendar_title: "വിള കലണ്ടർ", modal_calendar_body: "ഞങ്ങളുടെ സ്മാർട്ട് കലണ്ടർ നിങ്ങളുടെ വിള, സ്ഥലം, പ്രാദേശിക കാലാവസ്ഥാ രീതികൾ എന്നിവ അടിസ്ഥാനമാക്കി വ്യക്തിഗതമാക്കിയ വിത, ജലസേചനം, വിളവെടുപ്പ് ഷെഡ്യൂളുകൾ നൽകുന്നു.", modal_calendar_body_short: "നിങ്ങളുടെ സ്ഥലത്തിനും വിളയ്ക്കും വ്യക്തിഗതമാക്കിയ വിതയ്ക്കൽ, വിളവെടുപ്പ് ഷെഡ്യൂളുകൾ നേടുക.",
+                modal_community_title: "കമ്മ്യൂണിറ്റി പിന്തുണ", modal_community_body: "പരിചയസമ്പന്നരായ കർഷകരുടെയും കാർഷിക വിദഗ്ധരുടെയും ഒരു ശൃംഖലയുമായി ബന്ധപ്പെടുക. ചോദ്യങ്ങൾ ചോദിക്കുക, നിങ്ങളുടെ വിജയങ്ങൾ പങ്കിടുക, വിശ്വസനീയമായ ഉപദേശം നേടുക.", modal_community_body_short: "അറിവ് പങ്കുവെക്കാനും പ്രശ്നങ്ങൾ പരിഹരിക്കാനും സഹ കർഷകരുമായും വിദഗ്ധരുമായും ബന്ധപ്പെടുക.",
+                modal_schemes_title: "സർക്കാർ പദ്ധതികൾ", modal_schemes_body: "കർഷകർക്ക് ലഭ്യമായ ഏറ്റവും പുതിയ സർക്കാർ പദ്ധതികൾ, സബ്‌സിഡികൾ, സാമ്പത്തിക സഹായങ്ങൾ എന്നിവയെക്കുറിച്ച് അറിഞ്ഞിരിക്കുക. നിങ്ങൾക്ക് എളുപ്പത്തിൽ മനസിലാക്കാനും ആനുകൂല്യങ്ങൾക്കായി അപേക്ഷിക്കാനും ഞങ്ങൾ വിവരങ്ങൾ ലളിതമാക്കുന്നു.", modal_schemes_body_short: "ഏറ്റവും പുതിയ സർക്കാർ സബ്‌സിഡികൾ, വായ്പകൾ, പിന്തുണാ പരിപാടികൾ എന്നിവയെക്കുറിച്ച് അപ്‌ഡേറ്റായി തുടരുക.",
+                footer_kerala: "കേരള സർക്കാരിനായുള്ള ഒരു ഡിജിറ്റൽ സംരംഭം", footer_hexa: "ഒരു ഉൽപ്പന്നം"
+            },
+            hi: {
+                lang_select_title: "अपनी भाषा चुनें", lang_select_subtitle: "आगे बढ़ने के लिए कृपया अपनी पसंदीदा भाषा चुनें।",
+                login_title: "किसान मित्र में आपका स्वागत है", login_subtitle: "आपका व्यक्तिगत एआई कृषि सहायक।", login_email_placeholder: "ईमेल या फ़ोन नंबर", login_password_placeholder: "पासवर्ड", login_btn_text: "लॉग इन करें",
+                app_title: "किसान मित्र", app_subtitle: "आपका खेती का सह-पायलट", lang_btn: "भाषा",
+                nav_ai_chat: "एआई चैट", nav_features: "विशेषताएँ", nav_how_it_works: "यह कैसे काम करता है", nav_testimonials: "प्रशंसापत्र",
+                chat_placeholder: "फसल के बारे में पूछें या एक छवि अपलोड करें...", initial_greeting: "नमस्ते! मैं आपकी कैसे मदद कर सकता हूँ? आप एक प्रश्न पूछ सकते हैं या विश्लेषण के लिए एक छवि अपलोड कर सकते हैं।",
+                features_title: "ऑल-इन-वन फार्मिंग टूलकिट", features_subtitle: "मौसम के पूर्वानुमान से लेकर सरकारी योजनाओं तक, अपनी ज़रूरत की सभी जानकारी एक ही स्थान पर प्राप्त करें।",
+                how_it_works_title: "स्मार्ट खेती के सरल चरण", step1_title: "पूछें या अपलोड करें", step1_body: "एक प्रश्न टाइप करें, बोलें, या अपनी फसल की एक छवि अपलोड करें।", step2_title: "तुरंत एआई सलाह प्राप्त करें", step2_body: "हमारा शक्तिशाली एआई आपके इनपुट का विश्लेषण करता है और कार्रवाई योग्य उत्तर प्रदान करता है।", step3_title: "सुनें और सीखें", step3_body: "प्रतिक्रिया को ज़ोर से सुनें, जिससे जानकारी सभी के लिए सुलभ हो जाती है।",
+                testimonials_title: "किसानों द्वारा विश्वसनीय", testimonial1_text: "\"किसान मित्र के छवि विश्लेषण ने मेरी धान की फसल पर पत्ती झुलसा को तुरंत पहचान लिया। मेरी फसल बच गई!\"", testimonial1_author: "- ए. वर्गीस, केरल",
+                api_error: "क्षमा करें, मुझे कनेक्ट करने में समस्या हो रही है। कृपया एपीआई कुंजी जांचें या बाद में पुनः प्रयास करें।",
+                weather_loading: "मौसम डेटा लोड हो रहा है...",
+                modal_weather_title: "लाइव मौसम पूर्वानुमान", modal_weather_body: "अपनी कृषि गतिविधियों की योजना बनाने में मदद के लिए, तापमान, स्थितियों और आर्द्रता सहित अपने स्थान के लिए वास्तविक समय के मौसम अपडेट प्राप्त करें।", modal_weather_body_short: "अपनी गतिविधियों की योजना के लिए अपने स्थान के लिए वास्तविक समय मौसम अपडेट प्राप्त करें।",
+                modal_calendar_title: "फसल कैलेंडर", modal_calendar_body: "हमारा स्मार्ट कैलेंडर आपकी फसल, स्थान और स्थानीय मौसम पैटर्न के आधार पर व्यक्तिगत बुवाई, सिंचाई और कटाई कार्यक्रम प्रदान करता है।", modal_calendar_body_short: "अपने स्थान और फसल के लिए व्यक्तिगत बुवाई और कटाई कार्यक्रम प्राप्त करें।",
+                modal_community_title: "सामुदायिक सहायता", modal_community_body: "अनुभवी किसानों और कृषि विशेषज्ञों के एक नेटवर्क से जुड़ें। प्रश्न पूछें, अपनी सफलताएं साझा करें, और विश्वसनीय सलाह प्राप्त करें।", modal_community_body_short: "ज्ञान साझा करने और समस्याओं को हल करने के लिए साथी किसानों और विशेषज्ञों से जुड़ें।",
+                modal_schemes_title: "सरकारी योजनाएं", modal_schemes_body: "किसानों के लिए उपलब्ध नवीनतम सरकारी योजनाओं, सब्सिडी और वित्तीय सहायता के बारे में सूचित रहें। हम जानकारी को सरल बनाते हैं ताकि आप आसानी से समझ सकें और लाभ के लिए आवेदन कर सकें।", modal_schemes_body_short: "नवीनतम सरकारी सब्सिडी, ऋण और सहायता कार्यक्रमों पर अपडेट रहें।",
+                footer_kerala: "केरल सरकार के लिए एक डिजिटल पहल", footer_hexa: "द्वारा एक उत्पाद"
+            },
+            te: {
+                lang_select_title: "మీ భాషను ఎంచుకోండి", lang_select_subtitle: "కొనసాగించడానికి దయచేసి మీకు ఇష్టమైన భాషను ఎంచుకోండి.",
+                login_title: "కిసాన్ మిత్రకు స్వాగతం", login_subtitle: "మీ వ్యక్తిగత AI వ్యవసాయ సహాయకుడు.", login_email_placeholder: "ఇమెయిల్ లేదా ఫోన్ నంబర్", login_password_placeholder: "పాస్వర్డ్", login_btn_text: "లాగిన్",
+                app_title: "కిసాన్ మిత్ర", app_subtitle: "మీ వ్యవసాయ సహ-పైలట్", lang_btn: "భాష",
+                nav_ai_chat: "AI చాట్", nav_features: "ఫీచర్లు", nav_how_it_works: "ఇది ఎలా పనిచేస్తుంది", nav_testimonials: "అభిప్రాయాలు",
+                chat_placeholder: "పంట గురించి అడగండి లేదా చిత్రాన్ని అప్‌లోడ్ చేయండి...", initial_greeting: "నమస్కారం! నేను మీకు ఎలా సహాయపడగలను? మీరు ఒక ప్రశ్న అడగవచ్చు లేదా విశ్లేషణ కోసం ఒక చిత్రాన్ని అప్‌లోడ్ చేయవచ్చు.",
+                features_title: "ఆల్-ఇన్-వన్ ఫార్మింగ్ టూల్‌కిట్", features_subtitle: "వాతావరణ సూచనల నుండి ప్రభుత్వ పథకాల వరకు, మీకు అవసరమైన మొత్తం సమాచారాన్ని ఒకే చోట పొందండి.",
+                how_it_works_title: "స్మార్ట్ ఫార్మింగ్‌కు సులభమైన దశలు", step1_title: "అడగండి లేదా అప్‌లోడ్ చేయండి", step1_body: "ఒక ప్రశ్నను టైప్ చేయండి, మాట్లాడండి, లేదా మీ పంట చిత్రాన్ని అప్‌లోడ్ చేయండి.", step2_title: "తక్షణ AI సలహా పొందండి", step2_body: "మా శక్తివంతమైన AI మీ ఇన్‌పుట్‌ను విశ్లేషించి, చర్య తీసుకోదగిన సమాధానాలను అందిస్తుంది.", step3_title: "వినండి మరియు నేర్చుకోండి", step3_body: "ప్రతిస్పందనను గట్టిగా వినండి, ఇది అందరికీ సమాచారాన్ని అందుబాటులోకి తెస్తుంది.",
+                testimonials_title: "రైతులచే విశ్వసించబడింది", testimonial1_text: "\"కిసాన్ మిత్ర యొక్క చిత్ర విశ్లేషణ నా వరి పంటపై ఆకు మచ్చను తక్షణమే గుర్తించింది. నా పంటను కాపాడింది!\"", testimonial1_author: "- ఎ. వర్గీస్, కేరళ",
+                api_error: "క్షమించండి, కనెక్ట్ చేయడంలో నాకు సమస్య ఉంది. దయచేసి API కీని తనిఖీ చేయండి లేదా తర్వాత మళ్లీ ప్రయత్నించండి.",
+                weather_loading: "వాతావరణ డేటా లోడ్ అవుతోంది...",
+                modal_weather_title: "ప్రత్యక్ష వాతావరణ సూచన", modal_weather_body: "మీ వ్యవసాయ కార్యకలాపాలను ప్లాన్ చేయడంలో సహాయపడటానికి, ఉష్ణోగ్రత, పరిస్థితులు మరియు తేమతో సహా మీ ప్రదేశం కోసం నిజ-సమయ వాతావరణ నవీకరణలను పొందండి.", modal_weather_body_short: "మీ కార్యకలాపాలను ప్లాన్ చేయడానికి మీ ప్రదేశం కోసం నిజ-సమయ వాతావరణ నవీకరణలను పొందండి.",
+                modal_calendar_title: "పంట క్యాలెండర్", modal_calendar_body: "మా స్మార్ట్ క్యాలెండర్ మీ పంట, ప్రదేశం మరియు స్థానిక వాతావరణ నమూనాల ఆధారంగా వ్యక్తిగతీకరించిన విత్తడం, నీటిపారుదల మరియు కోత షెడ్యూల్‌లను అందిస్తుంది.", modal_calendar_body_short: "మీ ప్రదేశం మరియు పంట కోసం వ్యక్తిగతీకరించిన విత్తనాలు మరియు కోత షెడ్యూల్‌లను పొందండి.",
+                modal_community_title: "కమ్యూనిటీ మద్దతు", modal_community_body: "అనుభవజ్ఞులైన రైతులు మరియు వ్యవసాయ నిపుణుల నెట్‌వర్క్‌తో కనెక్ట్ అవ్వండి. ప్రశ్నలు అడగండి, మీ విజయాలను పంచుకోండి మరియు విశ్వసనీయ సలహాలను పొందండి.", modal_community_body_short: "జ్ఞానాన్ని పంచుకోవడానికి మరియు సమస్యలను పరిష్కరించడానికి తోటి రైతులు మరియు నిపుణులతో కనెక్ట్ అవ్వండి.",
+                modal_schemes_title: "ప్రభుత్వ పథకాలు", modal_schemes_body: "రైతులకు అందుబాటులో ఉన్న తాజా ప్రభుత్వ పథకాలు, సబ్సిడీలు మరియు ఆర్థిక సహాయం గురించి సమాచారం తెలుసుకోండి. మేము సమాచారాన్ని సులభతరం చేస్తాము, తద్వారా మీరు సులభంగా అర్థం చేసుకోవచ్చు మరియు ప్రయోజనాల కోసం దరఖాస్తు చేసుకోవచ్చు.", modal_schemes_body_short: "తాజా ప్రభుత్వ సబ్సిడీలు, రుణాలు మరియు సహాయ కార్యక్రమాలపై నవీకరించబడండి.",
+                footer_kerala: "కేరళ ప్రభుత్వం కోసం ఒక డిజిటల్ చొరవ", footer_hexa: "ఒక ఉత్పత్తి"
+            },
+            ta: {
+                lang_select_title: "உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்", lang_select_subtitle: "தொடர, உங்கள் விருப்பமான மொழியைத் தேர்ந்தெடுக்கவும்.",
+                login_title: "கிசான் மித்ராவுக்கு வரவேற்கிறோம்", login_subtitle: "உங்கள் தனிப்பட்ட AI விவசாய உதவியாளர்.", login_email_placeholder: "மின்னஞ்சல் அல்லது தொலைபேசி எண்", login_password_placeholder: "கடவுச்சொல்", login_btn_text: "உள்நுழைய",
+                app_title: "கிசான் மித்ரா", app_subtitle: "உங்கள் விவசாய துணை விமானி", lang_btn: "மொழி",
+                nav_ai_chat: "AI அரட்டை", nav_features: "அம்சங்கள்", nav_how_it_works: "இது எப்படி வேலை செய்கிறது", nav_testimonials: "பாராட்டுரைகள்",
+                chat_placeholder: "ஒரு பயிர் பற்றி கேட்கவும் அல்லது ஒரு படத்தை பதிவேற்றவும்...", initial_greeting: "வணக்கம்! நான் உங்களுக்கு எப்படி உதவ முடியும்? நீங்கள் ஒரு கேள்வியைக் கேட்கலாம் அல்லது பகுப்பாய்விற்காக ஒரு படத்தை பதிவேற்றலாம்.",
+                features_title: "அனைத்தும் அடங்கிய விவசாயக் கருவித்தொகுப்பு", features_subtitle: "வானிலை முன்னறிவிப்புகள் முதல் அரசாங்கத் திட்டங்கள் வரை, உங்களுக்குத் தேவையான அனைத்து தகவல்களையும் ஒரே இடத்தில் பெறுங்கள்.",
+                how_it_works_title: "ஸ்மார்ட் விவசாயத்திற்கான எளிய படிகள்", step1_title: "கேட்கவும் அல்லது பதிவேற்றவும்", step1_body: "ஒரு வினவலைத் தட்டச்சு செய்யவும், பேசவும், அல்லது உங்கள் பயிரின் ஒரு படத்தைப் பதிவேற்றவும்.", step2_title: "உடனடி AI ஆலோசனையைப் பெறுங்கள்", step2_body: "எங்கள் சக்திவாய்ந்த AI உங்கள் உள்ளீட்டை பகுப்பாய்வு செய்து, செயல்படக்கூடிய பதில்களை வழங்குகிறது.", step3_title: "கேட்டு கற்றுக்கொள்ளுங்கள்", step3_body: "பதிலை உரக்கக் கேளுங்கள், இது அனைவருக்கும் தகவலை அணுகக்கூடியதாக ஆக்குகிறது.",
+                testimonials_title: "விவசாயிகளால் நம்பப்படுகிறது", testimonial1_text: "\"கிசான் மித்ராவின் படப் பகுப்பாய்வு எனது நெற் பயிரில் இலைக்கருகல் நோயை உடனடியாகக் கண்டறிந்தது. எனது அறுவடையைக் காப்பாற்றியது!\"", testimonial1_author: "- ஏ. வர்கீஸ், கேரளா",
+                api_error: "மன்னிக்கவும், இணைப்பதில் சிக்கல் உள்ளது. தயவுசெய்து API விசையைச் சரிபார்க்கவும் அல்லது பின்னர் மீண்டும் முயற்சிக்கவும்.",
+                weather_loading: "வானிலை தரவு ஏற்றப்படுகிறது...",
+                modal_weather_title: "நேரடி வானிலை முன்னறிவிப்பு", modal_weather_body: "உங்கள் விவசாய நடவடிக்கைகளைத் திட்டமிட உதவ, வெப்பநிலை, நிலைமைகள் மற்றும் ஈரப்பதம் உள்ளிட்ட உங்கள் இருப்பிடத்திற்கான நிகழ்நேர வானிலை புதுப்பிப்புகளைப் பெறுங்கள்.", modal_weather_body_short: "உங்கள் செயல்பாடுகளைத் திட்டமிட உங்கள் இருப்பிடத்திற்கான நிகழ்நேர வானிலை புதுப்பிப்புகளைப் பெறுங்கள்.",
+                modal_calendar_title: "பயிர் நாட்காட்டி", modal_calendar_body: "எங்கள் ஸ்மார்ட் நாட்காட்டி உங்கள் பயிர், இருப்பிடம் மற்றும் உள்ளூர் வானிலை முறைகளின் அடிப்படையில் தனிப்பயனாக்கப்பட்ட விதைப்பு, நீர்ப்பாசனம் மற்றும் அறுவடை அட்டவணைகளை வழங்குகிறது.", modal_calendar_body_short: "உங்கள் இருப்பிடம் மற்றும் பயிர்க்கான தனிப்பயனாக்கப்பட்ட விதைப்பு மற்றும் அறுவடை அட்டவணைகளைப் பெறுங்கள்.",
+                modal_community_title: "சமூக ஆதரவு", modal_community_body: "அனுபவம் வாய்ந்த விவசாயிகள் மற்றும் விவசாய நிபுணர்களின் ஒரு நெட்வொர்க்குடன் இணையுங்கள். கேள்விகளைக் கேளுங்கள், உங்கள் வெற்றிகளைப் பகிர்ந்து கொள்ளுங்கள், மற்றும் நம்பகமான ஆலோசனையைப் பெறுங்கள்.", modal_community_body_short: "அறிவைப் பகிர்ந்து கொள்ளவும், சிக்கல்களைத் தீர்க்கவும் சக விவசாயிகள் மற்றும் நிபுணர்களுடன் இணையுங்கள்.",
+                modal_schemes_title: "அரசு திட்டங்கள்", modal_schemes_body: "விவசாயிகளுக்குக் கிடைக்கும் சமீபத்திய அரசாங்கத் திட்டங்கள், மானியங்கள் மற்றும் நிதி உதவிகள் குறித்துத் தகவலுடன் இருங்கள். நாங்கள் தகவலை எளிதாக்குகிறோம், இதன் மூலம் நீங்கள் எளிதாகப் புரிந்துகொண்டு பலன்களுக்கு விண்ணப்பிக்கலாம்.", modal_schemes_body_short: "சமீபத்திய அரசாங்க மானியங்கள், கடன்கள் மற்றும் ஆதரவுத் திட்டங்கள் குறித்துப் புதுப்பித்த நிலையில் இருங்கள்.",
+                footer_kerala: "கேரள அரசுக்கான ஒரு டிஜிட்டல் முயற்சி", footer_hexa: "ஒரு தயாரிப்பு"
+            }
+        };
+        let currentLanguage = 'en';
+        let voices = [];
+
+        // --- FUNCTIONS ---
+        const setLanguage = (lang) => {
+            currentLanguage = lang;
+            document.documentElement.lang = lang; 
+            // Translate all elements with data-i18n-key
+            document.querySelectorAll('[data-i18n-key]').forEach(el => {
+                const key = el.dataset.i18nKey;
+                const translation = (translations[lang] && translations[lang][key]) ? translations[lang][key] : translations['en'][key];
+                if(el) el.textContent = translation;
+            });
+            // Translate all elements with data-i18n-placeholder
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+               const key = el.dataset.i18nPlaceholder;
+               const translation = (translations[lang] && translations[lang][key]) ? translations[lang][key] : translations['en'][key];
+               if(el) el.placeholder = translation;
+            });
+        };
+        
+        const addMessage = (sender, text, imageUrl = null) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            if (imageUrl) {
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                messageDiv.appendChild(img);
+            }
+            if(text) {
+                const textNode = document.createElement('p');
+                if (!(sender === 'user' && imageUrl && !text)) {
+                     textNode.textContent = text;
+                     messageDiv.appendChild(textNode);
+                }
+            }
+            messagesArea.appendChild(messageDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        };
+
+        const showTypingIndicator = () => {
+            if(document.getElementById('typing-indicator')) return; // Prevent multiple indicators
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'message bot';
+            typingDiv.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
+            messagesArea.appendChild(typingDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        };
+
+        const hideTypingIndicator = () => {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        };
+
+        // NEW Code (With the command to fix the problem)
+        // NEW AND IMPROVED speakText FUNCTION
+const speakText = (text) => {
+    speechSynthesis.cancel(); // Stop any currently speaking utterance
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Step 1: Explicitly set the language for the utterance. This is crucial.
+    utterance.lang = currentLanguage;
+
+    // Step 2: Find the best available voice.
+    // We will try to find a voice that exactly matches the language code (e.g., "ta-IN" for Tamil-India)
+    const exactVoice = voices.find(v => v.lang.replace('_', '-') === `${currentLanguage}-IN`);
+    // If not found, find any voice for that language (e.g., "ta")
+    const anyMatchingVoice = voices.find(v => v.lang.startsWith(currentLanguage));
+
+    // Assign the best voice we found.
+    utterance.voice = exactVoice || anyMatchingVoice;
+
+    // Step 3: Check if a voice was actually found and log it for debugging.
+    if (utterance.voice) {
+        console.log(`Using voice: ${utterance.voice.name} for language: ${utterance.lang}`);
+    } else {
+        // This message will appear if no voice is available on your system for that language.
+        console.warn(`No voice found for language '${currentLanguage}'. The browser will use its default fallback.`);
+        // Even if no specific voice is found, setting utterance.lang might allow the browser to use a basic, default voice if one exists.
+    }
+    
+    speechSynthesis.speak(utterance);
+};
+
+        const loadVoices = () => { voices = speechSynthesis.getVoices(); };
+
+        const getAIResponse = async (query, imageBase64 = null) => {
+            let parts = [];
+            if(imageBase64){
+                    parts.push({
+                        inline_data: {
+                            mime_type: 'image/jpeg',
+                            data: imageBase64.split(',')[1]
+                        }
+                    });
+            }
+            parts.push({ text: query });
+            
+            const contents = [{ role: "user", parts }];
+
+            try {
+                const response = await fetch(GEMINI_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents })
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("AI API Error Details:", errorData);
+                    throw new Error(errorData.error?.message || `HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!responseText) {
+                     throw new Error("Empty response from AI.");
+                }
+                return responseText;
+            } catch (error) {
+                console.error("AI API Error:", error);
+                return translations[currentLanguage].api_error;
+            }
+        };
+        
+        const handleSend = async (text, imageBase64 = null, shouldSpeak = false) => {
+            const userInput = text.trim();
+            if (!userInput && !imageBase64) return;
+            
+            addMessage('user', userInput, imageBase64);
+            chatInput.value = '';
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            voiceBtn.disabled = true;
+            imageBtn.disabled = true;
+
+            showTypingIndicator();
+            
+            const prompt = userInput || "Analyze this image of a crop and provide farming advice. Identify the plant, check for any diseases, and suggest solutions if needed.";
+            const botResponse = await getAIResponse(prompt, imageBase64);
+            
+            hideTypingIndicator();
+            addMessage('bot', botResponse);
+            
+            if (shouldSpeak) {
+                speakText(botResponse);
+            }
+
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            voiceBtn.disabled = false;
+            imageBtn.disabled = false;
+            chatInput.focus();
+        };
+
+        const fetchWeather = async (lat, lon) => {
+
+    // CORRECTED URL for WeatherAPI.com
+    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Weather data not available.');
+        const data = await response.json();
+        
+        // CORRECTED innerHTML to match the response from WeatherAPI.com
+        weatherInfo.innerHTML = `
+            <img src="${data.current.condition.icon}" alt="${data.current.condition.text}" style="width: 60px; height: 60px;">
+            <div style="font-size: 1.5rem; font-weight: 600;">${Math.round(data.current.temp_c)}°C</div>
+            <div>${data.current.condition.text} in ${data.location.name}</div>
+        `;
+    } catch (error) {
+        weatherInfo.innerHTML = `<p>${error.message}</p>`;
+    }
+};
+
+        const getLocationAndFetchWeather = () => {
+             const defaultLocation = { lat: 10.8505, lon: 76.2711 }; // Kerala default
+             if (navigator.geolocation) {
+                 navigator.geolocation.getCurrentPosition(
+                     (position) => fetchWeather(position.coords.latitude, position.coords.longitude),
+                     (error) => { 
+                         console.log("Geolocation failed, using default location.", error);
+                         fetchWeather(defaultLocation.lat, defaultLocation.lon);
+                     }
+                 );
+             } else {
+                console.log("Geolocation not supported. Using default location.");
+                fetchWeather(defaultLocation.lat, defaultLocation.lon);
+             }
+        };
+
+        const openFeatureModal = (type) => {
+            modalTitle.textContent = translations[currentLanguage][`modal_${type}_title`];
+            modalBody.textContent = translations[currentLanguage][`modal_${type}_body`];
+            featureModal.classList.add('show');
+        }
+        
+        // --- EVENT LISTENERS ---
+        // Replace the old language-select-btn listener with this one
+        document.querySelectorAll('.language-select-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setLanguage(btn.dataset.lang);
+                // Only proceed to login if the main app isn't already visible
+                if (mainApp.style.display !== 'flex') {
+                    langSelectionModal.style.display = 'none';
+                    loginPage.style.display = 'flex';
+                }
+            });
+        });
+
+        emailInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); passwordInput.focus(); }
+        });
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); loginBtn.click(); }
+        });
+        // --- Add this new block of code ---
+showSignupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+    formTitle.textContent = 'Create Your Account';
+    formSubtitle.textContent = 'Get started with Kisan Mitra today.';
+    toggleFormText.innerHTML = `Already have an account? <a href="#" id="show-login-link" style="color: var(--primary-green); font-weight: 600;">Login</a>`;
+
+    // We need to add a listener to the new "Login" link
+    document.getElementById('show-login-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        formTitle.textContent = translations[currentLanguage]['login_title']; // Reset title
+        formSubtitle.textContent = translations[currentLanguage]['login_subtitle']; // Reset subtitle
+        toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
+        // Re-attach the original listener since the element was recreated
+        document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click); 
+    });
+});
+
+signupBtn.addEventListener('click', () => {
+    // Here you would normally handle the actual account creation
+    alert("Account created successfully! Please log in.");
+    // Switch back to the login form
+    loginForm.style.display = 'block';
+    signupForm.style.display = 'none';
+    formTitle.textContent = translations[currentLanguage]['login_title'];
+    formSubtitle.textContent = translations[currentLanguage]['login_subtitle'];
+    toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
+    document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click); 
+});
+// --- End of new block ---
+        loginBtn.addEventListener('click', () => {
+            loginPage.style.display = 'none';
+            mainApp.style.display = 'flex';
+            location.hash = 'app';
+            getLocationAndFetchWeather();
+            addMessage('bot', translations[currentLanguage].initial_greeting);
+        });
+
+        imageBtn.addEventListener('click', () => imageUploadInput.click());
+        imageUploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const imageBase64 = reader.result;
+                handleSend(chatInput.value, imageBase64, false);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        sendBtn.addEventListener('click', () => handleSend(chatInput.value, null, false));
+        chatInput.addEventListener('keypress', (e) => e.key === 'Enter' && handleSend(chatInput.value, null, false));
+        
+        voiceBtn.addEventListener('click', () => {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech recognition is not supported in this browser.");
+                return;
+            }
+            const recognition = new SpeechRecognition();
+            recognition.lang = currentLanguage;
+            recognition.start();
+            recognition.onresult = (event) => {
+                chatInput.value = event.results[0][0].transcript;
+                handleSend(chatInput.value, null, true);
+            };
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error", event.error);
+            };
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) { backToTopBtn.classList.add('show'); } 
+            else { backToTopBtn.classList.remove('show'); }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const modalType = card.dataset.modal;
+                if(modalType) openFeatureModal(modalType);
+            });
+        });
+
+        featureModal.querySelector('.modal-close-btn').addEventListener('click', () => featureModal.classList.remove('show'));
+        featureModal.addEventListener('click', (e) => {
+            if(e.target === featureModal) featureModal.classList.remove('show');
+        });
+
+         hamburgerBtn.addEventListener('click', () => navbarLinks.classList.toggle('active'));
+
+        langDropdownBtn.addEventListener('click', () => {
+            langOptions.style.display = langOptions.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        langOptions.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                setLanguage(e.target.dataset.lang);
+                langOptions.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!langDropdownBtn.contains(e.target) && !langOptions.contains(e.target)) {
+                langOptions.style.display = 'none';
+            }
+        });
+
+        // --- INITIALIZATION ---
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+}
+
+function revealVisibleElements() {
+    document.querySelectorAll('.hidden').forEach((el) => {
+        if (isElementInViewport(el)) {
+            el.classList.add('visible');
+            observer.unobserve(el);
+        }
+    });
+}
+
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        revealVisibleElements();
+    }
+});
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+        // REPLACE IT WITH THIS
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // <-- This new line fixes the bug
+        }
+    });
+}, { threshold: 0.2 });
+        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+        document.querySelectorAll('.navbar-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                if(navbarLinks.classList.contains('active')) navbarLinks.classList.remove('active');
+            });
+        });
+        revealVisibleElements();
+    });
+</script>
+</body>
+</html>

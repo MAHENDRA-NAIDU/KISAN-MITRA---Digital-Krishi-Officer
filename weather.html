@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast - Kisan Mitra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    :root {
+    --primary-green: #008447;
+    --dark-green: #005C31;
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+    --surface: #FFFFFF;
+    --border-color: #E5E7EB;
+
+    /* ▼▼▼ NEW GRADIENTS ▼▼▼ */
+    --bg-gradient: linear-gradient(to top right, #f0fdf4, #e7f7ee);
+    --navbar-gradient: linear-gradient(90deg, #008447 0%, #00914f 100%);
+    --footer-gradient: linear-gradient(90deg, #005C31 0%, #004424 100%);
+    --button-gradient: linear-gradient(45deg, #7ED957, #58b432);
+    --card-gradient: linear-gradient(135deg, #ffffff, #f9fafb);
+    --hero-bg-gradient: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+}
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-image: var(--bg-gradient); color: var(--text-dark); }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-image: var(--navbar-gradient); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;}
+        .navbar-logo { height: 45px; margin-right: 15px; }
+        .navbar-title { margin: 0; font-size: 1.25rem; }
+        .footer { text-align: center; padding: 40px 20px; background-image: var(--footer-gradient); color: #E5E7EB; margin-top: 80px; }
+        .page-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-title { font-size: 2.5rem; color: var(--primary-green); }
+        .weather-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .weather-card { background-image: var(--card-gradient); border-radius: 12px; padding: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: center; }
+        .weather-card h3 { margin-top: 0; color: var(--dark-green); }
+        #current-weather-details { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .navbar-title-container { line-height: 1.2; }
+        .navbar-title { margin: 0; font-size: 1.25rem; }
+        .navbar-subtitle { margin: 0; font-size: 0.8rem; opacity: 0.9; }
+        .navbar-link-button 
+        {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+.navbar-link-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+/* --- Add these new styles for the forecast --- */
+#forecast-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+.forecast-day {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.forecast-day:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.forecast-day .date {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.forecast-day .icon img {
+    width: 40px;
+    height: 40px;
+}
+.forecast-day .temps {
+    font-weight: 500;
+    color: var(--text-light);
+}
+#weather-map-card {
+    padding: 10px; /* Adjust padding to give map more space */
+}
+#weather-map-iframe {
+    border-radius: 12px;
+}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+    <div class="navbar-left">
+        <a href="index.html#hero" class="navbar-brand">
+            <svg class="navbar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="navbar-title-container">
+                <h1 class="navbar-title">Kisan Mitra</h1>
+                <p class="navbar-subtitle">Your Farming Co-Pilot</p>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-right">
+        <a href="index.html#features" class="navbar-link-button">Features</a>
+        <a href="index.html#how-it-works" class="navbar-link-button">How It Works</a>
+    </div>
+</nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h2 class="page-title">Live Weather Dashboard</h2>
+        </div>
+
+        <div class="weather-dashboard">
+
+    <div class="weather-card" id="current-weather">
+        <h3>Current Conditions</h3>
+        <div id="current-weather-details">
+            <p>Loading weather data...</p>
+        </div>
+    </div>
+
+    <div class="weather-card">
+        <h3>7-Day Forecast</h3>
+        <div id="forecast-container">
+            </div>
+    </div>
+
+    <div class="weather-card" id="weather-map-card">
+        <h3>Weather Map</h3>
+        <iframe id="weather-map-iframe" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+</div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 Kisan Mitra | A Product by HEXA CODERS</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const WEATHER_API_KEY = '540b7926732540b6870165230251309'; // Your key
+            const currentWeatherDetails = document.getElementById('current-weather-details');
+
+            const fetchWeather = async (lat, lon) => {
+                const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error('Weather data not available.');
+                    const data = await response.json();
+                    const mapIframe = document.getElementById('weather-map-iframe');
+// This is a special URL for embedding Google Maps without needing an API key
+const mapUrl = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15194.12081827401!2d${lon}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1694672683845!5m2!1sen!2sin`;
+mapIframe.src = mapUrl;
+                    currentWeatherDetails.innerHTML = `
+                        <img src="${data.current.condition.icon}" alt="${data.current.condition.text}" style="width: 80px; height: 80px;">
+                        <div style="font-size: 2rem; font-weight: 600;">${Math.round(data.current.temp_c)}°C</div>
+                        <div style="font-size: 1.1rem;">${data.current.condition.text}</div>
+                        <p><strong>Location:</strong> ${data.location.name}, ${data.location.region}</p>
+                        <p><strong>Humidity:</strong> ${data.current.humidity}%</p>
+                        <p><strong>Wind:</strong> ${data.current.wind_kph} kph</p>
+                    `;
+                } catch (error) {
+                    currentWeatherDetails.innerHTML = `<p>${error.message}</p>`;
+                }
+            };
+            const fetchForecast = async (lat, lon) => {
+    const forecastContainer = document.getElementById('forecast-container');
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=7`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Forecast data not available.');
+        const data = await response.json();
+
+        forecastContainer.innerHTML = ''; // Clear any previous content
+
+        data.forecast.forecastday.forEach(day => {
+            const date = new Date(day.date);
+            const dayName = date.toLocaleDateString("en-US", { weekday: 'short' });
+
+            const dayElement = document.createElement('div');
+            dayElement.className = 'forecast-day';
+            dayElement.innerHTML = `
+                <span class="date">${dayName}</span>
+                <span class="icon"><img src="${day.day.condition.icon}" alt="${day.day.condition.text}"></span>
+                <span class="temps">${Math.round(day.day.maxtemp_c)}° / ${Math.round(day.day.mintemp_c)}°</span>
+            `;
+            forecastContainer.appendChild(dayElement);
+        });
+
+    } catch (error) {
+        forecastContainer.innerHTML = `<p>${error.message}</p>`;
+    }
+};
+
+            const getLocationAndFetchWeather = () => {
+    const defaultLocation = { lat: 10.8505, lon: 76.2711 };
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                fetchWeather(position.coords.latitude, position.coords.longitude);
+                fetchForecast(position.coords.latitude, position.coords.longitude);
+            },
+            () => {
+                fetchWeather(defaultLocation.lat, defaultLocation.lon);
+                fetchForecast(defaultLocation.lat, defaultLocation.lon);
+            }
+        );
+    } else {
+        fetchWeather(defaultLocation.lat, defaultLocation.lon);
+        fetchForecast(defaultLocation.lat, defaultLocation.lon);
+    }
+};
+            getLocationAndFetchWeather();
+        });
+    </script>
+</body>
+</html>

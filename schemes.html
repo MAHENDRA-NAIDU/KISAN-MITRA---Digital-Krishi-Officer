@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Schemes - Kisan Mitra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+    --primary-green: #008447;
+    --dark-green: #005C31;
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+    --surface: #FFFFFF;
+    --border-color: #E5E7EB;
+
+    /* ▼▼▼ NEW GRADIENTS ▼▼▼ */
+    --bg-gradient: linear-gradient(to top right, #f0fdf4, #e7f7ee);
+    --navbar-gradient: linear-gradient(90deg, #008447 0%, #00914f 100%);
+    --footer-gradient: linear-gradient(90deg, #005C31 0%, #004424 100%);
+    --button-gradient: linear-gradient(45deg, #7ED957, #58b432);
+    --card-gradient: linear-gradient(135deg, #ffffff, #f9fafb);
+    --hero-bg-gradient: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+}
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-image: var(--bg-gradient); color: var(--text-dark); }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-image: var(--navbar-gradient); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .footer { text-align: center; padding: 40px 20px; background-image: var(--footer-gradient); color: #E5E7EB; margin-top: 80px; }
+        .scheme-card { background-image: var(--card-gradient); padding: 25px; border-radius: 12px; border-left: 5px solid; border-image: var(--button-gradient) 1; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .navbar-brand { display: flex; align-items: center; text-decoration: none; color: white; }
+        .navbar-logo { height: 45px; margin-right: 15px; }
+        .navbar-title { margin: 0; font-size: 1.25rem; }
+        .page-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-title { font-size: 2.5rem; color: var(--primary-green); }
+        .schemes-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .scheme-card h3 { margin-top: 0; color: var(--dark-green); }
+        .scheme-card p { color: var(--text-light); line-height: 1.6; }
+        .scheme-card a { color: var(--primary-green); font-weight: 600; text-decoration: none; }
+        .navbar-title-container { line-height: 1.2; }
+.navbar-title { margin: 0; font-size: 1.25rem; }
+.navbar-subtitle { margin: 0; font-size: 0.8rem; opacity: 0.9; }
+.navbar-link-button {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+.navbar-link-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+    <div class="navbar-left">
+        <a href="index.html#hero" class="navbar-brand">
+            <svg class="navbar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="navbar-title-container">
+                <h1 class="navbar-title">Kisan Mitra</h1>
+                <p class="navbar-subtitle">Your Farming Co-Pilot</p>
+            </div>
+        </a>
+    </div>
+    <div class="navbar-right">
+        <a href="index.html#features" class="navbar-link-button">Features</a>
+        <a href="index.html#how-it-works" class="navbar-link-button">How It Works</a>
+    </div>
+</nav>
+
+    <div class="page-container">
+        <div class="page-header">
+            <h2 class="page-title">Government Schemes for Farmers</h2>
+        </div>
+        <div class="schemes-container">
+            <div class="scheme-card">
+                <h3>Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)</h3>
+                <p>An income support scheme where all eligible small and marginal farmer families get up to ₹6,000 per year.</p>
+                <a href="#">Learn More & Apply</a>
+            </div>
+            <div class="scheme-card">
+                <h3>Pradhan Mantri Fasal Bima Yojana (PMFBY)</h3>
+                <p>An insurance service for farmers for their yields. It provides comprehensive insurance cover against failure of the crop, thus helping to stabilise the income of farmers.</p>
+                <a href="#">Learn More & Apply</a>
+            </div>
+            <div class="scheme-card">
+                <h3>Kisan Credit Card (KCC) Scheme</h3>
+                <p>A scheme that provides farmers with timely access to credit for their cultivation and other needs.</p>
+                <a href="#">Learn More & Apply</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 Kisan Mitra | A Product by HEXA CODERS</p>
+    </footer>
+
+</body>
+</html>
