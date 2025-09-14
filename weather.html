@@ -24,6 +24,8 @@
 }
         body { font-family: 'Poppins', sans-serif; margin: 0; background-image: var(--bg-gradient); color: var(--text-dark); }
         .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-image: var(--navbar-gradient); color: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;}
+        .navbar-brand { display: flex; align-items: center; text-decoration: none; color: white; }
+        .navbar-left{display: flex; align-items:center;}
         .navbar-logo { height: 45px; margin-right: 15px; }
         .navbar-title { margin: 0; font-size: 1.25rem; }
         .footer { text-align: center; padding: 40px 20px; background-image: var(--footer-gradient); color: #E5E7EB; margin-top: 80px; }
@@ -35,7 +37,6 @@
         .weather-card h3 { margin-top: 0; color: var(--dark-green); }
         #current-weather-details { display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .navbar-title-container { line-height: 1.2; }
-        .navbar-title { margin: 0; font-size: 1.25rem; }
         .navbar-subtitle { margin: 0; font-size: 0.8rem; opacity: 0.9; }
         .navbar-link-button 
         {
@@ -85,13 +86,19 @@
 #weather-map-iframe {
     border-radius: 12px;
 }
+element.style {
+    text-decoration: none;
+    display: flex
+;
+    color: white;
+}
     </style>
 </head>
 <body>
 
     <nav class="navbar">
     <div class="navbar-left">
-        <a href="index.html#hero" class="navbar-brand">
+        <a href="index.html#app" class="navbar-brand">
             <svg class="navbar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <div class="navbar-title-container">
                 <h1 class="navbar-title">Kisan Mitra</h1>
@@ -134,7 +141,7 @@
     </div>
 
     <footer class="footer">
-        <p>© 2025 Kisan Mitra | A Product by HEXA CODERS</p>
+        <p>© 2025 Kisan Mitra | Developed By HEXA CODERS</p>
     </footer>
 
     <script>
