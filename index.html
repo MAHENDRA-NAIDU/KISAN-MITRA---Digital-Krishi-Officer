@@ -45,11 +45,11 @@
         /* --- Find this rule and replace it --- */
         .language-selection-container {
             background-color: var(--surface); 
-            padding: 40px; 
+            padding: 30px 50px 50px 50px; 
             border-radius: 16px;
             text-align: center; 
             max-width: 550px; /* Reduced from 500px to better fit content, but on a smaller modal */
-            width: 90%;
+            width: 60%;
             animation: fadeIn 0.5s ease-out;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); /* Added shadow */
         }
@@ -103,7 +103,7 @@
         }
         .login-container {
             background-color: var(--surface); padding: 40px 50px; border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 65%;
             animation: fadeIn 0.5s ease-out;
         }
         .login-logo { width: 80px; height: 80px; margin-bottom: 20px; }
@@ -159,7 +159,6 @@
         .language-options { display: none; position: absolute; top: 110%; left: 50%; transform: translateX(-50%); background-color: var(--surface); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); overflow: hidden; z-index: 20;}
         .language-options button { display: block; width: 100%; padding: 10px 20px; border: none; background: none; text-align: left; cursor: pointer; color: var(--text-dark); }
         .language-options button:hover { background-color: var(--background); }
-
         /* --- NEW SECTIONS --- */
         section { padding: 80px 20px; }
         .section-title { text-align: center; font-size: 2.5rem; font-weight: 700; color: var(--primary-green); margin-bottom: 10px; }
@@ -189,6 +188,23 @@
             background-image: var(--hero-bg-gradient), url('https://placehold.co/1920x1080/005C31/FFFFFF?text=Kerala+Backwaters+Agriculture');
             background-size: cover; background-position: center; background-attachment: fixed;
             padding: 40px 20px;
+            .hero-title-container {
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 800px;
+}
+.hero-title-container h1 {
+    font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+    color: white;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+.hero-title-container p {
+    font-size: clamp(1rem, 2.5vw, 1.15rem); /* Responsive font size */
+    color: white;
+    line-height: 1.6;
+    margin: 0;
+}
         }
         .chat-container { width: 100%; max-width: 800px; background-color: var(--surface); border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column; height: 70vh; }
         .messages-area { flex-grow: 1; padding: 20px; overflow-y: auto; }
@@ -285,13 +301,158 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1.0); }
         }
+        /* PASTE THIS CSS BEFORE YOUR FIRST @media QUERY */
 
+/* --- Hero Section Two-Column Layout --- */
+.hero-main-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 1400px; /* Increased max-width for the new layout */
+    align-items: flex-start; /* Aligns items to the top */
+    padding: 0 20px;
+}
+.hero-column-left {
+    flex: 1; /* Takes up available space */
+    min-width: 400px; /* Prevents the chat from getting too squished */
+}
+.hero-column-right {
+    flex: 1; /* Takes up available space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 70vh; /* Match chat container height */
+    overflow-y: auto; /* Add scroll if content overflows */
+    padding-right: 10px; /* Space for the scrollbar */
+}
+/* Custom scrollbar for the right column */
+.hero-column-right::-webkit-scrollbar {
+  width: 8px;
+}
+.hero-column-right::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.hero-column-right::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.hero-column-right::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+/* Adjust chat container to not grow unnecessarily */
+.chat-container {
+    max-width: 100%; /* Ensure it doesn't exceed its column */
+}
+
+/* --- Information Hub Styling --- */
+.info-hub-header {
+    padding: 10px;
+    border-radius: 12px;
+    background: var(--dark-green);
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.info-hub-header h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.5rem;
+}
+.info-hub-header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+.info-card {
+    background: var(--card-gradient);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    border: 1px solid var(--border-color);
+}
+.info-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    color: var(--dark-green);
+}
+.info-card-header img {
+    width: 40px;
+    height: 40px;
+}
+.info-card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+.info-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 10px 0 0 0;
+}
+.info-card h4 {
+    margin: 0 0 5px 0;
+    color: var(--text-dark);
+}
+
+/* --- Specific Card Styles --- */
+
+/* Market Prices */
+.market-prices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.market-item {
+    background-color: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+.market-item span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.market-item strong {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--primary-green);
+    font-weight: 600;
+}
+.market-item small {
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+/* Disease Alert */
+.disease-alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.risk-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+.risk-tag.high-risk {
+    background-color: #ef4444; /* Red */
+}
         /* Responsive Design */
         @media (max-width: 950px) {
             .navbar {
                 justify-content: space-between;
                 padding: 1rem;
             }
+            .hero-main-container {
+        flex-direction: column;
+        align-items: center; /* Center the columns when stacked */
+        gap: 40px; /* Increase gap for stacked layout */
+    }
             .navbar-left, .navbar-right { flex-basis: 0; flex-grow: 1; }
             .navbar-left { justify-content: flex-start; }
             
@@ -325,7 +486,14 @@
         width: 100%;
     }
 }
+@media (max-width: 1024px){
+    .hero-main-container {
+        flex-direction: column;
+        align-items: stretch; /* Make columns full width */
+    }
+}
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- INITIAL LANGUAGE SELECTION MODAL -->
@@ -406,25 +574,99 @@
         <main>
             <!-- Hero Section with Chat -->
             <section id="hero">
-                <div class="hero-text">
-                    <h1 class="hero-title">Welcome to Kisan Mitra</h1>
-                    <p class="hero-subtitle">Your AI-powered guide to smarter farming. Ask me anything!</p>
+                <div class="hero-title-container">
+        <h1>AI-Powered Farming Advisory</h1>
+        <p>Your guide to smarter, more efficient farming. Ask anything or explore our information hub.</p>
+    </div>
+    <div class="hero-main-container">
+        
+        <div class="hero-column-left">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3>AI Krishi Mitra Assistant</h3>
+                    <button id="stop-voice-btn" title="Stop voice">🔊 Stop</button>
                 </div>
-                <div class="chat-container">
-                    <div class="chat-header">
-                        <h3>AI Krishi Mitra Assistant</h3>
-                        <button id="stop-voice-btn" title="Stop voice">🔊 Stop</button>
+                <div class="messages-area" id="messages-area"></div>
+                <div class="input-area">
+                    <input type="text" id="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Ask about a crop or upload an image...">
+                    <button id="image-btn" title="Upload Image"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.5L14.5 12L19 18H5L8.5 13.5Z" fill="currentColor"/></svg></button>
+                    <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
+                    <button id="voice-btn" title="Ask with voice"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2ZM19 11C19 14.87 15.87 18 12 18C8.13 18 5 14.87 5 11H7C7 14.41 9.59 17 13 17V21H11V23H13H15V21H13V17C16.41 17 19 14.41 19 11Z" fill="currentColor"/></svg></button>
+                    <button id="send-btn" title="Send message">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-column-right">
+            <div class="info-hub-header">
+                <h2>Farming Information Hub</h2>
+                <p>Essential knowledge for modern farmers</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <img src="https://img.icons8.com/plasticine/100/price-tag.png" alt="Market Price Icon">
+                    <h3>Market Prices</h3>
+                </div>
+                <div class="market-prices-grid">
+                    <div class="market-item">
+                        <span>Rice</span>
+                        <strong>₹2,150 <small>/ quintal</small></strong>
                     </div>
-                    <div class="messages-area" id="messages-area"></div>
-                    <div class="input-area">
-                        <input type="text" id="chat-input" data-i18n-placeholder="chat_placeholder" placeholder="Ask about a crop or upload an image...">
-                        <button id="image-btn" title="Upload Image"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 19V5C21 3.9 20.1 3 19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19ZM8.5 13.5L11 16.5L14.5 12L19 18H5L8.5 13.5Z" fill="currentColor"/></svg></button>
-                        <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
-                        <button id="voice-btn" title="Ask with voice"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2ZM19 11C19 14.87 15.87 18 12 18C8.13 18 5 14.87 5 11H7C7 14.41 9.59 17 13 17V21H11V23H13H15V21H13V17C16.41 17 19 14.41 19 11Z" fill="currentColor"/></svg></button>
-                        <button id="send-btn" title="Send message">➤</button>
+                    <div class="market-item">
+                        <span>Wheat</span>
+                        <strong>₹2,050 <small>/ quintal</small></strong>
+                    </div>
+                    <div class="market-item">
+                        <span>Sugarcane</span>
+                        <strong>₹3,500 <small>/ ton</small></strong>
+                    </div>
+                    <div class="market-item">
+                        <span>Cotton</span>
+                        <strong>₹6,200 <small>/ quintal</small></strong>
                     </div>
                 </div>
-            </section>
+            </div>
+            
+            <div class="info-card">
+                 <div class="info-card-header">
+                    <img src="https://img.icons8.com/plasticine/100/virus.png" alt="Disease Alert Icon">
+                    <h3>Disease Alert</h3>
+                </div>
+                <div class="disease-alert">
+                    <h4>Leaf Blight Warning</h4>
+                    <span class="risk-tag high-risk">High Risk</span>
+                </div>
+                <p>High humidity levels may cause leaf blight in rice crops. Apply preventive fungicide spray.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <img src="https://img.icons8.com/plasticine/100/person-male.png" alt="Expert Advice Icon">
+                    <h3>Expert Advice</h3>
+                </div>
+                <h4>Today's Recommendation</h4>
+                <p>Focus on soil preparation for the upcoming season. Check soil moisture levels and consider organic fertilizer application.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <img src="https://img.icons8.com/plasticine/100/grasshopper.png" alt="Pest Control Icon">
+                    <h3>Pest Control</h3>
+                </div>
+                <p>Monitor for aphids in vegetable crops. Introduce ladybugs as a natural predator or use neem oil spray for control.</p>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <img src="https://img.icons8.com/plasticine/100/soil.png" alt="Soil Health Icon">
+                    <h3>Soil Health</h3>
+                </div>
+                <p>Your soil pH is slightly acidic (6.5). Consider adding lime to balance it for better nutrient absorption.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
             <!-- All other sections remain the same -->
             <section id="features">
@@ -498,7 +740,7 @@
         <footer class="footer">
             <svg class="footer-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 90 C 40 80, 20 65, 20 40 C 20 15, 50 10, 50 10" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 90 C 60 80, 80 65, 80 40 C 80 15, 50 10, 50 10" fill="none" stroke="#7ED957" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <p class="footer-text" data-i18n-key="footer_kerala">A Digital Initiative for the Government of Kerala</p>
-            <p class="footer-text">© 2025 Kisan Mitra | <span data-i18n-key="footer_hexa">A Product by</span> <strong class="footer-brand">HEXA CODERS</strong></p>
+            <p class="footer-text">© 2025 Kisan Mitra | <span data-i18n-key="footer_hexa">Developed By</span> <strong class="footer-brand">HEXA CODERS</strong></p>
         </footer>
     </div>
     
@@ -513,8 +755,9 @@
     
     <!-- BACK TO TOP BUTTON -->
     <button id="back-to-top" title="Go to top">↑</button>
-
     <script>
+    // Make sure you have added the marked.js script tag in your <head>
+    
     document.addEventListener('DOMContentLoaded', () => {
         // --- ELEMENTS ---
         const stopVoiceBtn = document.getElementById('stop-voice-btn');
@@ -535,7 +778,6 @@
         const navbarLinks = document.getElementById('navbar-links');
         const langDropdownBtn = document.getElementById('lang-dropdown-btn');
         const langOptions = document.getElementById('lang-options');
-        const weatherInfo = document.getElementById('weather-info');
         const messagesArea = document.getElementById('messages-area');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
@@ -547,26 +789,21 @@
         const imageBtn = document.getElementById('image-btn');
         const imageUploadInput = document.getElementById('image-upload-input');
         if (location.hash === '#app') {
-        langSelectionModal.style.display = 'none';
-        loginPage.style.display = 'none';
-        mainApp.style.display = 'flex';
-        // Also initialize the features needed for the main app
-        getLocationAndFetchWeather();
-        if (!messagesArea.hasChildNodes()) { // Add welcome message only if chat is empty
-             addMessage('bot', translations[currentLanguage].initial_greeting);
+            langSelectionModal.style.display = 'none';
+            loginPage.style.display = 'none';
+            mainApp.style.display = 'flex';
+            if (!messagesArea.hasChildNodes()) {
+                addMessage('bot', translations[currentLanguage].initial_greeting);
+            }
         }
-    }
-        // Add this event listener
+        
         stopVoiceBtn.addEventListener('click', () => {
-        speechSynthesis.cancel(); // This is the command to stop all speech
+            speechSynthesis.cancel();
         });
 
         // --- API KEYS ---
-        const GEMINI_API_KEY = 'AIzaSyApI-lZH1dH6owitjQWqTLd1csiop0pB70';
-        // ⬇️ IMPORTANT: Get a FREE key from openweathermap.org and paste it here ⬇️
-        const WEATHER_API_KEY = '540b7926732540b6870165230251309'; 
-        
-        const GEMINI_MODEL_NAME = "gemini-1.5-flash-latest"; // Vision capable model
+        const GEMINI_API_KEY = 'AIzaSyApI-lZH1dH6owitjQWqTLd1csiop0pB70'; // Replace with your key
+        const GEMINI_MODEL_NAME = "gemini-1.5-flash-latest";
         const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL_NAME}:generateContent?key=${GEMINI_API_KEY}`;
 
         // --- FULL TRANSLATIONS OBJECT ---
@@ -663,18 +900,16 @@
         // --- FUNCTIONS ---
         const setLanguage = (lang) => {
             currentLanguage = lang;
-            document.documentElement.lang = lang; 
-            // Translate all elements with data-i18n-key
+            document.documentElement.lang = lang;
             document.querySelectorAll('[data-i18n-key]').forEach(el => {
                 const key = el.dataset.i18nKey;
                 const translation = (translations[lang] && translations[lang][key]) ? translations[lang][key] : translations['en'][key];
                 if(el) el.textContent = translation;
             });
-            // Translate all elements with data-i18n-placeholder
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-               const key = el.dataset.i18nPlaceholder;
-               const translation = (translations[lang] && translations[lang][key]) ? translations[lang][key] : translations['en'][key];
-               if(el) el.placeholder = translation;
+                const key = el.dataset.i18nPlaceholder;
+                const translation = (translations[lang] && translations[lang][key]) ? translations[lang][key] : translations['en'][key];
+                if(el) el.placeholder = translation;
             });
         };
         
@@ -687,18 +922,17 @@
                 messageDiv.appendChild(img);
             }
             if(text) {
+                // Use marked.js to convert Markdown to HTML
                 const textNode = document.createElement('p');
-                if (!(sender === 'user' && imageUrl && !text)) {
-                     textNode.textContent = text;
-                     messageDiv.appendChild(textNode);
-                }
+                textNode.innerHTML = marked.parse(text); // THIS IS THE KEY FIX
+                messageDiv.appendChild(textNode);
             }
             messagesArea.appendChild(messageDiv);
             messagesArea.scrollTop = messagesArea.scrollHeight;
         };
 
         const showTypingIndicator = () => {
-            if(document.getElementById('typing-indicator')) return; // Prevent multiple indicators
+            if(document.getElementById('typing-indicator')) return;
             const typingDiv = document.createElement('div');
             typingDiv.id = 'typing-indicator';
             typingDiv.className = 'message bot';
@@ -714,49 +948,44 @@
             }
         };
 
-        // NEW Code (With the command to fix the problem)
-        // NEW AND IMPROVED speakText FUNCTION
-const speakText = (text) => {
-    speechSynthesis.cancel(); // Stop any currently speaking utterance
-    const utterance = new SpeechSynthesisUtterance(text);
+        const speakText = (text) => {
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
 
-    // Step 1: Explicitly set the language for the utterance. This is crucial.
-    utterance.lang = currentLanguage;
-
-    // Step 2: Find the best available voice.
-    // We will try to find a voice that exactly matches the language code (e.g., "ta-IN" for Tamil-India)
-    const exactVoice = voices.find(v => v.lang.replace('_', '-') === `${currentLanguage}-IN`);
-    // If not found, find any voice for that language (e.g., "ta")
-    const anyMatchingVoice = voices.find(v => v.lang.startsWith(currentLanguage));
-
-    // Assign the best voice we found.
-    utterance.voice = exactVoice || anyMatchingVoice;
-
-    // Step 3: Check if a voice was actually found and log it for debugging.
-    if (utterance.voice) {
-        console.log(`Using voice: ${utterance.voice.name} for language: ${utterance.lang}`);
-    } else {
-        // This message will appear if no voice is available on your system for that language.
-        console.warn(`No voice found for language '${currentLanguage}'. The browser will use its default fallback.`);
-        // Even if no specific voice is found, setting utterance.lang might allow the browser to use a basic, default voice if one exists.
-    }
-    
-    speechSynthesis.speak(utterance);
-};
+            utterance.lang = currentLanguage;
+            
+            // Find the best available voice for the current language
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => voice.lang.startsWith(currentLanguage));
+            
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+                console.log(`Using voice: ${preferredVoice.name} for language: ${currentLanguage}`);
+            } else {
+                console.warn(`No voice found for language '${currentLanguage}'. Using default.`);
+            }
+            
+            speechSynthesis.speak(utterance);
+        };
 
         const loadVoices = () => { voices = speechSynthesis.getVoices(); };
 
         const getAIResponse = async (query, imageBase64 = null) => {
+            // FIX: Add a prompt to explicitly ask for a reply in the user's language
+            const languagePrompt = `Please reply only in ${currentLanguage}. If you cannot, please explain why in a single short sentence in the same language.`;
+            
             let parts = [];
             if(imageBase64){
-                    parts.push({
-                        inline_data: {
-                            mime_type: 'image/jpeg',
-                            data: imageBase64.split(',')[1]
-                        }
-                    });
+                parts.push({
+                    inline_data: {
+                        mime_type: 'image/jpeg',
+                        data: imageBase64.split(',')[1]
+                    }
+                });
             }
-            parts.push({ text: query });
+            
+            // FIX: Prepend the language prompt to the user's query
+            parts.push({ text: `${languagePrompt}\n\n${query}` });
             
             const contents = [{ role: "user", parts }];
 
@@ -774,7 +1003,7 @@ const speakText = (text) => {
                 const data = await response.json();
                 const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text;
                 if (!responseText) {
-                     throw new Error("Empty response from AI.");
+                    throw new Error("Empty response from AI.");
                 }
                 return responseText;
             } catch (error) {
@@ -813,55 +1042,10 @@ const speakText = (text) => {
             chatInput.focus();
         };
 
-        const fetchWeather = async (lat, lon) => {
-
-    // CORRECTED URL for WeatherAPI.com
-    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
-    
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Weather data not available.');
-        const data = await response.json();
-        
-        // CORRECTED innerHTML to match the response from WeatherAPI.com
-        weatherInfo.innerHTML = `
-            <img src="${data.current.condition.icon}" alt="${data.current.condition.text}" style="width: 60px; height: 60px;">
-            <div style="font-size: 1.5rem; font-weight: 600;">${Math.round(data.current.temp_c)}°C</div>
-            <div>${data.current.condition.text} in ${data.location.name}</div>
-        `;
-    } catch (error) {
-        weatherInfo.innerHTML = `<p>${error.message}</p>`;
-    }
-};
-
-        const getLocationAndFetchWeather = () => {
-             const defaultLocation = { lat: 10.8505, lon: 76.2711 }; // Kerala default
-             if (navigator.geolocation) {
-                 navigator.geolocation.getCurrentPosition(
-                     (position) => fetchWeather(position.coords.latitude, position.coords.longitude),
-                     (error) => { 
-                         console.log("Geolocation failed, using default location.", error);
-                         fetchWeather(defaultLocation.lat, defaultLocation.lon);
-                     }
-                 );
-             } else {
-                console.log("Geolocation not supported. Using default location.");
-                fetchWeather(defaultLocation.lat, defaultLocation.lon);
-             }
-        };
-
-        const openFeatureModal = (type) => {
-            modalTitle.textContent = translations[currentLanguage][`modal_${type}_title`];
-            modalBody.textContent = translations[currentLanguage][`modal_${type}_body`];
-            featureModal.classList.add('show');
-        }
-        
         // --- EVENT LISTENERS ---
-        // Replace the old language-select-btn listener with this one
         document.querySelectorAll('.language-select-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 setLanguage(btn.dataset.lang);
-                // Only proceed to login if the main app isn't already visible
                 if (mainApp.style.display !== 'flex') {
                     langSelectionModal.style.display = 'none';
                     loginPage.style.display = 'flex';
@@ -875,45 +1059,38 @@ const speakText = (text) => {
         passwordInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') { e.preventDefault(); loginBtn.click(); }
         });
-        // --- Add this new block of code ---
-showSignupLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    loginForm.style.display = 'none';
-    signupForm.style.display = 'block';
-    formTitle.textContent = 'Create Your Account';
-    formSubtitle.textContent = 'Get started with Kisan Mitra today.';
-    toggleFormText.innerHTML = `Already have an account? <a href="#" id="show-login-link" style="color: var(--primary-green); font-weight: 600;">Login</a>`;
+        showSignupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            formTitle.textContent = 'Create Your Account';
+            formSubtitle.textContent = 'Get started with Kisan Mitra today.';
+            toggleFormText.innerHTML = `Already have an account? <a href="#" id="show-login-link" style="color: var(--primary-green); font-weight: 600;">Login</a>`;
 
-    // We need to add a listener to the new "Login" link
-    document.getElementById('show-login-link').addEventListener('click', (e) => {
-        e.preventDefault();
-        loginForm.style.display = 'block';
-        signupForm.style.display = 'none';
-        formTitle.textContent = translations[currentLanguage]['login_title']; // Reset title
-        formSubtitle.textContent = translations[currentLanguage]['login_subtitle']; // Reset subtitle
-        toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
-        // Re-attach the original listener since the element was recreated
-        document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click); 
-    });
-});
+            document.getElementById('show-login-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                formTitle.textContent = translations[currentLanguage]['login_title'];
+                formSubtitle.textContent = translations[currentLanguage]['login_subtitle'];
+                toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
+                document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click);
+            });
+        });
 
-signupBtn.addEventListener('click', () => {
-    // Here you would normally handle the actual account creation
-    alert("Account created successfully! Please log in.");
-    // Switch back to the login form
-    loginForm.style.display = 'block';
-    signupForm.style.display = 'none';
-    formTitle.textContent = translations[currentLanguage]['login_title'];
-    formSubtitle.textContent = translations[currentLanguage]['login_subtitle'];
-    toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
-    document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click); 
-});
-// --- End of new block ---
+        signupBtn.addEventListener('click', () => {
+            alert("Account created successfully! Please log in.");
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            formTitle.textContent = translations[currentLanguage]['login_title'];
+            formSubtitle.textContent = translations[currentLanguage]['login_subtitle'];
+            toggleFormText.innerHTML = `Don't have an account? <a href="#" id="show-signup-link" style="color: var(--primary-green); font-weight: 600;">Sign Up</a>`;
+            document.getElementById('show-signup-link').addEventListener('click', showSignupLink.click);
+        });
         loginBtn.addEventListener('click', () => {
             loginPage.style.display = 'none';
             mainApp.style.display = 'flex';
             location.hash = 'app';
-            getLocationAndFetchWeather();
             addMessage('bot', translations[currentLanguage].initial_greeting);
         });
 
@@ -952,7 +1129,7 @@ signupBtn.addEventListener('click', () => {
         });
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) { backToTopBtn.classList.add('show'); } 
+            if (window.scrollY > 400) { backToTopBtn.classList.add('show'); }
             else { backToTopBtn.classList.remove('show'); }
         });
 
@@ -972,7 +1149,7 @@ signupBtn.addEventListener('click', () => {
             if(e.target === featureModal) featureModal.classList.remove('show');
         });
 
-         hamburgerBtn.addEventListener('click', () => navbarLinks.classList.toggle('active'));
+        hamburgerBtn.addEventListener('click', () => navbarLinks.classList.toggle('active'));
 
         langDropdownBtn.addEventListener('click', () => {
             langOptions.style.display = langOptions.style.display === 'block' ? 'none' : 'block';
@@ -992,42 +1169,41 @@ signupBtn.addEventListener('click', () => {
         });
 
         // --- INITIALIZATION ---
-function isElementInViewport(el) {
-    const rect = el.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-function revealVisibleElements() {
-    document.querySelectorAll('.hidden').forEach((el) => {
-        if (isElementInViewport(el)) {
-            el.classList.add('visible');
-            observer.unobserve(el);
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
         }
-    });
-}
 
-window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-        revealVisibleElements();
-    }
-});
-speechSynthesis.onvoiceschanged = loadVoices;
-loadVoices();
-
-        // REPLACE IT WITH THIS
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target); // <-- This new line fixes the bug
+        function revealVisibleElements() {
+            document.querySelectorAll('.hidden').forEach((el) => {
+                if (isElementInViewport(el)) {
+                    el.classList.add('visible');
+                    observer.unobserve(el);
+                }
+            });
         }
-    });
-}, { threshold: 0.2 });
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                revealVisibleElements();
+            }
+        });
+        speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
         document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
         document.querySelectorAll('.navbar-links a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1036,6 +1212,18 @@ const observer = new IntersectionObserver((entries) => {
                 if(navbarLinks.classList.contains('active')) navbarLinks.classList.remove('active');
             });
         });
+
+        const scrollToSection = (hash) => {
+            const targetElement = document.querySelector(hash);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        if (window.location.hash) {
+            scrollToSection(window.location.hash);
+        }
+
         revealVisibleElements();
     });
 </script>
